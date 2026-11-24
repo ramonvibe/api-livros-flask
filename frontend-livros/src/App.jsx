@@ -1,16 +1,15 @@
 import { useState } from 'react'
 import './App.css'
 
-// Endereço da API. Usa o proxy do Vite (/api -> http://127.0.0.1:5000)
+// O proxy do Vite encaminha /api para o Flask em http://127.0.0.1:5000
 const API_URL = '/api/livros'
 
 function App() {
-  // Estado que armazena os livros recebidos da API
   const [livros, setLivros] = useState([])
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState('')
 
-  // Função executada somente quando o botão é clicado
+  // Só é chamada no clique do botão
   async function buscarLivros() {
     setCarregando(true)
     setErro('')
@@ -27,7 +26,7 @@ function App() {
       setLivros(dados.livros)
     } catch (e) {
       console.error(e)
-      setErro('Não foi possível buscar os livros. Verifique se a API Flask está em execução.')
+      setErro('Não foi possível buscar os livros. Confira se a API Flask está rodando na porta 5000 e tente de novo.')
     } finally {
       setCarregando(false)
     }
@@ -35,29 +34,37 @@ function App() {
 
   return (
     <main className="container">
-      <h1>Catálogo de Livros</h1>
+      <header>
+        <h1>Catálogo de Livros</h1>
+        <button type="button" onClick={buscarLivros} disabled={carregando}>
+          Buscar Livros
+        </button>
+      </header>
 
-      <button onClick={buscarLivros} disabled={carregando}>
-        Buscar Livros
-      </button>
-
-      {/* Área de mensagens */}
-      <div className="mensagens">
+      <div className="mensagens" aria-live="polite">
         {carregando && <p className="carregando">Carregando livros...</p>}
-        {erro && <p className="erro">{erro}</p>}
+        {erro && <p className="erro" role="alert">{erro}</p>}
+        {!carregando && !erro && livros.length === 0 && (
+          <p className="vazio">Nenhum livro carregado ainda.</p>
+        )}
       </div>
 
-      {/* Área de exibição dos livros */}
-      <section className="livros">
+      <ul className="livros">
         {livros.map((livro) => (
-          <article key={livro.id} className="livro">
-            <p><strong>ID:</strong> {livro.id}</p>
-            <p><strong>Título:</strong> {livro.titulo}</p>
-            <p><strong>Autor:</strong> {livro.autor}</p>
-            <p><strong>Ano:</strong> {livro.ano}</p>
-          </article>
+          <li key={livro.id} className="livro">
+            <dl>
+              <dt>ID</dt>
+              <dd>{livro.id}</dd>
+              <dt>Título</dt>
+              <dd className="titulo">{livro.titulo}</dd>
+              <dt>Autor</dt>
+              <dd>{livro.autor}</dd>
+              <dt>Ano</dt>
+              <dd>{livro.ano}</dd>
+            </dl>
+          </li>
         ))}
-      </section>
+      </ul>
     </main>
   )
 }

@@ -1,71 +1,131 @@
+:root {
+  --fundo: #f7f5f0;
+  --texto: #23211d;
+  --texto-suave: #5f5a50;
+  --linha: #ddd7cb;
+  --destaque: #8a3b1f;
+  --destaque-escuro: #6e2e17;
+  --erro-texto: #8f1d1d;
+  --erro-fundo: #f8e3df;
+
+  color-scheme: light;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+}
+
 * {
   box-sizing: border-box;
 }
 
+::selection {
+  background: var(--destaque);
+  color: #fff;
+}
+
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background: #f4f6fa;
-  color: #1f2937;
+  background: var(--fundo);
+  color: var(--texto);
 }
 
 .container {
-  max-width: 720px;
+  max-width: 40rem;
   margin: 0 auto;
-  padding: 40px 16px;
+  padding: 3rem 1rem;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid var(--texto);
 }
 
 h1 {
-  margin-top: 0;
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
 }
 
 button {
-  background: #2563eb;
+  font: inherit;
+  font-weight: 600;
+  background: var(--destaque);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 12px 22px;
-  font-size: 1rem;
+  border-radius: 6px;
+  padding: 0.7rem 1.3rem;
   cursor: pointer;
+  transition: background-color 150ms ease-out;
 }
 
 button:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: var(--destaque-escuro);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--destaque);
+  outline-offset: 3px;
 }
 
 button:disabled {
   opacity: 0.6;
-  cursor: wait;
+  cursor: progress;
 }
 
 .mensagens {
-  min-height: 1.5em;
-  margin: 16px 0;
+  min-height: 1.5rem;
+  margin: 1rem 0;
 }
 
-.carregando {
-  color: #2563eb;
+.mensagens p {
+  margin: 0;
+}
+
+.carregando,
+.vazio {
+  color: var(--texto-suave);
 }
 
 .erro {
-  color: #b91c1c;
-  background: #fee2e2;
-  border-radius: 8px;
-  padding: 10px 14px;
+  color: var(--erro-texto);
+  background: var(--erro-fundo);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
 }
 
 .livros {
-  display: grid;
-  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .livro {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 14px 18px;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--linha);
 }
 
-.livro p {
-  margin: 4px 0;
+.livro dl {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0;
+}
+
+.livro dt {
+  color: var(--texto-suave);
+}
+
+.livro dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.livro .titulo {
+  font-weight: 600;
+  font-size: 1.1rem;
 }
